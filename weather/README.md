@@ -16,7 +16,7 @@ uv sync
 cp env.template .env
 # edit .env file
 
-uv run mcp run main.py
+uv run main.py
 
 npx -y @modelcontextprotocol/inspector
 
