@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/vindops/mcps.git#subdirectory=weather",
+        "weather"
+      ],
+      "env": {
+        "ACCUWEATHER_API_KEY": "123456789",
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
