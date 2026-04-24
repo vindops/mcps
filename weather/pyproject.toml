@@ -13,3 +13,13 @@ dependencies = [
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["main", "server"]
+
+[project.scripts]
+weather = "main:main"

@@ -16,6 +16,8 @@ mcp = FastMCP('weather')
 async def get_daily_weather_tool(location: str, days: int = 5):
   return await get_daily_weather(location, days)
 
+def main():
+  mcp.run(transport=MCP_TRANSPORT)
 
 if __name__ == '__main__':
-  mcp.run(transport=MCP_TRANSPORT)
+  main()
