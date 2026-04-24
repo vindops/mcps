@@ -4,6 +4,7 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
+    "mcps",
     "weather",
 ]
 
@@ -507,6 +508,11 @@ cli = [
     { name = "python-dotenv" },
     { name = "typer" },
 ]
+
+[[package]]
+name = "mcps"
+version = "0.1.0"
+source = { editable = "." }
 
 [[package]]
 name = "mdurl"
