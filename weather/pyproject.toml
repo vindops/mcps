@@ -19,7 +19,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["main", "server"]
+py-modules = ["main", "tools"]
 
 [project.scripts]
 weather = "main:main"

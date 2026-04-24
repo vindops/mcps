@@ -1,5 +1,5 @@
 from mcp.server.fastmcp import FastMCP
-from server import get_daily_weather
+from tools import get_daily_weather
 from dotenv import load_dotenv
 import os
 
@@ -16,8 +16,10 @@ mcp = FastMCP('weather')
 async def get_daily_weather_tool(location: str, days: int = 5):
   return await get_daily_weather(location, days)
 
+
 def main():
   mcp.run(transport=MCP_TRANSPORT)
+
 
 if __name__ == '__main__':
   main()

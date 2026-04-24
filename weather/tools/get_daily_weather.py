@@ -15,9 +15,15 @@ LOCATION_CACHE_FILE = CACHE_DIR / 'location_cache.json'
 ACCUWEATHER_API_KEY = os.getenv('ACCUWEATHER_API_KEY')
 BASE_URL = 'http://dataservice.accuweather.com'
 
+if not ACCUWEATHER_API_KEY:
+  raise RuntimeError('ACCUWEATHER_API_KEY env is not set')
+
 
 async def get_cached_location_key(location: str) -> Optional[str]:
   """Get location key from cache."""
+  if not location:
+    raise ValueError('Location is required')
+
   if not LOCATION_CACHE_FILE.exists():
     return None
 
@@ -32,6 +38,9 @@ async def get_cached_location_key(location: str) -> Optional[str]:
 async def get_location_key(location: str) -> str:
   """Get location key from cache."""
 
+  if not location:
+    raise ValueError('Location is required')
+
   location_key = await get_cached_location_key(location)
 
   if location_key:
@@ -43,7 +52,7 @@ async def get_location_key(location: str) -> str:
       ) as resp:
         data = await resp.json()
 
-        if len(data) == 0:
+        if not data or len(data) == 0:
           raise ValueError(f'Location not found: {location}')
 
         location_key = data[0]['Key']
@@ -69,6 +78,12 @@ async def get_location_key(location: str) -> str:
 
 
 async def get_daily_weather(location: str, days: int = 5) -> Dict[str, Any]:
+  if not location:
+    raise ValueError('Location is required')
+
+  if not days:
+    raise ValueError('Days is required')
+
   location_key = await get_location_key(location)
 
   print('location_key: ', location_key)
