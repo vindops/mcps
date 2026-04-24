@@ -9,6 +9,3 @@ build-backend = "setuptools.build_meta"
 
 [tool.uv.workspace]
 members = ["weather"]
-
-[project.scripts]
-weather = "weather.main:main"
