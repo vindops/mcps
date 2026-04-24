@@ -52,29 +52,32 @@ async def get_location_key(location: str) -> str:
       ) as resp:
         data = await resp.json()
 
-        if not data or len(data) == 0:
-          raise ValueError(f'Location not found: {location}')
+      if not isinstance(data, list):
+        raise ValueError(f'Failed to get location key for location {location}: {data}')
 
-        location_key = data[0]['Key']
+      if len(data) == 0:
+        raise ValueError(f'Location not found: {location}')
 
-        # Save to cache
-        try:
-          if not CACHE_DIR.exists():
-            CACHE_DIR.mkdir(parents=True, exist_ok=True)
+      location_key = data[0]['Key']
 
-          if LOCATION_CACHE_FILE.exists():
-            with open(LOCATION_CACHE_FILE, 'r') as f:
-              cache = json.load(f)
-          else:
-            cache = {}
+    # Save to cache
+    try:
+      if not CACHE_DIR.exists():
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-          cache[location] = location_key
-          with open(LOCATION_CACHE_FILE, 'w') as f:
-            json.dump(cache, f, indent=2)
-        except Exception as e:
-          print(f'Warning: Failed to cache location key: {e}')
+      if LOCATION_CACHE_FILE.exists():
+        with open(LOCATION_CACHE_FILE, 'r') as f:
+          cache = json.load(f)
+      else:
+        cache = {}
 
-        return location_key
+      cache[location] = location_key
+      with open(LOCATION_CACHE_FILE, 'w') as f:
+        json.dump(cache, f, indent=2)
+    except Exception as e:
+      print(f'Warning: Failed to cache location key for location {location}: {e}')
+
+    return location_key
 
 
 async def get_daily_weather(location: str, days: int = 5) -> Dict[str, Any]:
@@ -86,7 +89,8 @@ async def get_daily_weather(location: str, days: int = 5) -> Dict[str, Any]:
 
   location_key = await get_location_key(location)
 
-  print('location_key: ', location_key)
+  if not location_key:
+    raise ValueError(f'Failed to get location key for location {location}')
 
   async with ClientSession() as session:
     async with session.get(
